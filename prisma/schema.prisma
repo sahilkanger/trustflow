@@ -1,0 +1,263 @@
+// ===========================================
+// TrustFlow — Database Schema
+// The DNA of the ecosystem
+// ===========================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── AUTHENTICATION ─────────────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── USERS ──────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For credentials auth
+
+  // Billing
+  plan          Plan      @default(FREE)
+  stripeCustomerId    String?  @unique
+  stripeSubscriptionId String? @unique
+  stripePriceId       String?
+  stripeCurrentPeriodEnd DateTime?
+
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  spaces        Space[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum Plan {
+  FREE
+  PRO
+  BUSINESS
+  ENTERPRISE
+}
+
+// ─── SPACES (Projects/Businesses) ───────────
+
+model Space {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique  // For public collection URL: /t/[slug]
+  logo        String?
+  website     String?
+  description String?
+
+  // Customization
+  primaryColor   String  @default("#6366f1")
+  thankYouMessage String @default("Thank you for your testimonial! 🎉")
+  questionPrompt  String @default("What has been your experience with us?")
+  collectVideo    Boolean @default(false)
+  collectRating   Boolean @default(true)
+  requireApproval Boolean @default(true)
+
+  // Relations
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testimonials Testimonial[]
+  widgets      Widget[]
+  emailCampaigns EmailCampaign[]
+
+  // Analytics
+  pageViews    Int  @default(0)
+  submissions  Int  @default(0)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+  @@index([slug])
+}
+
+// ─── TESTIMONIALS (Core Value Unit) ─────────
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  spaceId   String
+
+  // Content
+  text      String   @db.Text
+  rating    Int?     // 1-5
+  videoUrl  String?
+
+  // Author info
+  authorName  String
+  authorEmail String?
+  authorTitle String?  // Job title
+  authorCompany String?
+  authorAvatar  String?
+
+  // Metadata
+  status    TestimonialStatus @default(PENDING)
+  source    TestimonialSource @default(FORM)
+  tags      String[]          // Flexible tagging
+
+  // AI-enhanced fields
+  sentiment     Float?    // -1 to 1
+  summary       String?   // AI-generated summary
+  highlighted   Boolean   @default(false) // Featured testimonial
+
+  // Relations
+  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([spaceId])
+  @@index([status])
+  @@index([spaceId, status])
+}
+
+enum TestimonialStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ARCHIVED
+}
+
+enum TestimonialSource {
+  FORM       // Submitted via collection page
+  EMAIL      // Submitted via email campaign
+  IMPORT     // Imported from external source
+  API        // Submitted via API
+}
+
+// ─── WIDGETS (Viral Distribution Engine) ────
+
+model Widget {
+  id       String     @id @default(cuid())
+  spaceId  String
+  name     String
+  type     WidgetType
+
+  // Configuration
+  config   Json       @default("{}")
+  // Stores: theme, layout, maxItems, showRating, showAvatar, etc.
+
+  // Analytics (the system learns)
+  views      Int @default(0)
+  clicks     Int @default(0)
+
+  // Relations
+  space    Space   @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([spaceId])
+}
+
+enum WidgetType {
+  WALL_OF_LOVE
+  CAROUSEL
+  BADGE
+  MINIMAL
+  FLOATING
+}
+
+// ─── EMAIL CAMPAIGNS (Automated Collection) ─
+
+model EmailCampaign {
+  id       String  @id @default(cuid())
+  spaceId  String
+  name     String
+  subject  String
+  body     String  @db.Text
+
+  // Scheduling
+  status   CampaignStatus @default(DRAFT)
+  sentAt   DateTime?
+
+  // Recipients
+  recipients EmailRecipient[]
+
+  // Analytics  
+  totalSent    Int @default(0)
+  totalOpened  Int @default(0)
+  totalClicked Int @default(0)
+  totalSubmitted Int @default(0)
+
+  // Relations
+  space    Space   @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([spaceId])
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENT
+  CANCELLED
+}
+
+model EmailRecipient {
+  id          String @id @default(cuid())
+  campaignId  String
+  email       String
+  name        String?
+
+  // Tracking
+  sentAt    DateTime?
+  openedAt  DateTime?
+  clickedAt DateTime?
+  submittedAt DateTime?
+
+  campaign  EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId])
+  @@index([email])
+}
