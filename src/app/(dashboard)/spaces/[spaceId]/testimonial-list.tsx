@@ -17,8 +17,6 @@ interface Testimonial {
   status: string;
   highlighted: boolean;
   tags: string[];
-  sentiment: number | null;
-  summary: string | null;
   createdAt: Date;
 }
 
@@ -145,18 +143,6 @@ export function TestimonialList({
                 )}
 
                 <p className="text-sm leading-relaxed">{testimonial.text}</p>
-
-                {testimonial.sentiment !== null && (
-                  <p className="text-xs text-muted-foreground mt-2">
-                    Sentiment:{" "}
-                    {testimonial.sentiment > 0.3
-                      ? "Positive"
-                      : testimonial.sentiment < -0.3
-                      ? "Negative"
-                      : "Neutral"}{" "}
-                    ({(testimonial.sentiment * 100).toFixed(0)}%)
-                  </p>
-                )}
               </div>
 
               {/* Actions */}

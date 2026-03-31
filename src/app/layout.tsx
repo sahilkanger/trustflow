@@ -6,12 +6,12 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TrustFlow — Social Proof That Grows Itself",
+  title: "TrustFlow — Wall of Love for Your SaaS Landing Page",
   description:
-    "Collect, manage, and display testimonials that convert. The social proof ecosystem that grows with your business.",
+    "Add a high-converting wall of love to your SaaS landing page in 2 minutes. Import tweets, collect testimonials, embed anywhere.",
   openGraph: {
-    title: "TrustFlow — Social Proof That Grows Itself",
-    description: "Collect, manage, and display testimonials that convert.",
+    title: "TrustFlow — Wall of Love for Your SaaS Landing Page",
+    description: "Import tweets, collect testimonials, and embed a wall of love on your landing page in 2 minutes.",
     type: "website",
   },
 };

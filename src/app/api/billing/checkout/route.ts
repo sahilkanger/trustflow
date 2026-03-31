@@ -13,9 +13,9 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json();
-  const { plan } = body as { plan: "PRO" | "BUSINESS" | "ENTERPRISE" };
+  const { plan } = body as { plan: "PRO" };
 
-  if (!plan || !STRIPE_PLANS[plan]) {
+  if (plan !== "PRO" || !STRIPE_PLANS[plan]) {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
   }
 

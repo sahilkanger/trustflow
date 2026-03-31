@@ -5,32 +5,31 @@ import {
   ArrowRight,
   Zap,
   Globe,
-  BarChart3,
-  Mail,
   Code,
   Shield,
+  Twitter,
   Check,
 } from "lucide-react";
 
 const testimonials = [
   {
-    text: "TrustFlow increased our conversion rate by 34%. The embed widget just works — drop it in and watch sales grow.",
+    text: "I imported 15 tweets praising our product and had a wall of love on our landing page in under 3 minutes. Our trial signups went up 28% that week.",
     author: "Sarah Chen",
     title: "Head of Growth",
     company: "Launchpad.io",
     rating: 5,
   },
   {
-    text: "We switched from manually screenshotting reviews. Now testimonials flow in automatically and display beautifully on our site.",
+    text: "We were screenshotting tweets and manually pasting them. Now I just paste tweet URLs and they show up beautifully on our site. Wish I had this months ago.",
     author: "Marcus Johnson",
     title: "Founder",
     company: "ShipFast",
     rating: 5,
   },
   {
-    text: "The 'Powered by TrustFlow' link on our widget brought us 12 new customers last month alone. It markets itself.",
+    text: "The 'Powered by TrustFlow' link on our free widget brought us 12 new signups last month. It literally markets itself.",
     author: "Priya Patel",
-    title: "CEO",
+    title: "Founder",
     company: "CloudKitchen",
     rating: 5,
   },
@@ -38,40 +37,28 @@ const testimonials = [
 
 const features = [
   {
-    icon: Globe,
-    title: "Beautiful Collection Pages",
+    icon: Twitter,
+    title: "Import Tweets in One Click",
     description:
-      "Custom-branded pages that make leaving a testimonial effortless. Share a link, get social proof.",
+      "Paste a tweet URL. We pull the content, author, and avatar. It becomes a testimonial card on your wall of love instantly.",
+  },
+  {
+    icon: Globe,
+    title: "Collection Pages",
+    description:
+      "Custom-branded page your customers can submit testimonials through. Share the link, get social proof.",
   },
   {
     icon: Code,
-    title: "Embed Anywhere",
+    title: "Embed in One Line",
     description:
-      "One line of code. Wall of Love, carousel, or floating widget — renders beautifully on any site.",
-  },
-  {
-    icon: Mail,
-    title: "Automated Email Campaigns",
-    description:
-      "Set up drip sequences that automatically request testimonials from your happiest customers.",
-  },
-  {
-    icon: BarChart3,
-    title: "Conversion Analytics",
-    description:
-      "See which testimonials drive the most clicks and conversions. Data-driven social proof.",
-  },
-  {
-    icon: Zap,
-    title: "AI Enhancement",
-    description:
-      "Sentiment analysis, auto-summaries, and smart recommendations for which testimonials to feature.",
+      "Copy a single script tag. A beautiful wall of love renders on your landing page. No design work required.",
   },
   {
     icon: Shield,
-    title: "Approval Workflow",
+    title: "Approve Before Publishing",
     description:
-      "Review and approve testimonials before they go live. Full control over your brand narrative.",
+      "Every testimonial is reviewed by you before it goes live. Full control over what visitors see.",
   },
 ];
 
@@ -80,13 +67,14 @@ const plans = [
     name: "Free",
     price: "$0",
     period: "forever",
-    description: "Perfect for getting started",
+    description: "Get your wall of love up today",
     features: [
       "1 space",
       "10 testimonials",
-      "Basic embed widget",
-      "Collection pages",
-      "TrustFlow branding",
+      "Tweet import",
+      "Wall of Love embed",
+      "Collection page",
+      "TrustFlow branding on widget",
     ],
     cta: "Start for free",
     href: "/register",
@@ -96,35 +84,17 @@ const plans = [
     name: "Pro",
     price: "$29",
     period: "/month",
-    description: "For growing businesses",
+    description: "Remove branding. Unlimited proof.",
     features: [
       "3 spaces",
       "Unlimited testimonials",
-      "Remove branding",
-      "Email campaigns",
-      "Analytics dashboard",
+      "Remove TrustFlow branding",
+      "Unlimited tweet imports",
       "Priority support",
     ],
     cta: "Start free trial",
     href: "/register",
     highlighted: true,
-  },
-  {
-    name: "Business",
-    price: "$79",
-    period: "/month",
-    description: "For teams that scale",
-    features: [
-      "10 spaces",
-      "Unlimited testimonials",
-      "AI enhancement",
-      "Advanced analytics",
-      "Custom domains",
-      "API access",
-    ],
-    cta: "Start free trial",
-    href: "/register",
-    highlighted: false,
   },
 ];
 
@@ -180,21 +150,22 @@ export default function LandingPage() {
       <section className="pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 rounded-full border bg-indigo-50 px-4 py-1.5 mb-8">
-            <Zap className="h-3.5 w-3.5 text-indigo-600" />
+            <Twitter className="h-3.5 w-3.5 text-indigo-600" />
             <span className="text-sm text-indigo-700 font-medium">
-              Social proof that grows itself
+              Import tweets. Collect forms. Embed anywhere.
             </span>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-[1.1]">
-            Turn happy customers into your{" "}
+            Add a{" "}
             <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              best salespeople
-            </span>
+              wall of love
+            </span>{" "}
+            to your SaaS landing page in 2 minutes
           </h1>
           <p className="mt-6 text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Collect, manage, and embed testimonials that convert visitors into
-            buyers. One link to collect. One line of code to display. Zero
-            ongoing effort.
+            Your landing page is losing signups without social proof. Import
+            tweets praising your product, collect testimonials, and embed a
+            beautiful wall of love — in one line of code.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/register">
@@ -223,14 +194,13 @@ export default function LandingPage() {
       <section className="border-y bg-gray-50 py-8 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-sm text-gray-500 mb-4">
-            Trusted by teams at
+            Built for SaaS founders who don&apos;t have time to mess around
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-gray-400 font-semibold text-lg">
-            <span>Vercel</span>
-            <span>Supabase</span>
-            <span>Linear</span>
-            <span>Cal.com</span>
-            <span>Resend</span>
+            <span>Indie Hackers</span>
+            <span>Solo Founders</span>
+            <span>SaaS Teams</span>
+            <span>Startups</span>
           </div>
         </div>
       </section>
@@ -250,21 +220,21 @@ export default function LandingPage() {
             {[
               {
                 step: "1",
-                title: "Create a Space",
+                title: "Import or Collect",
                 description:
-                  "Name your project, get a custom collection page instantly. No code needed.",
+                  "Paste tweet URLs that praise your product. Or share a collection link with customers. Testimonials flow in.",
               },
               {
                 step: "2",
-                title: "Share your link",
+                title: "Approve the best",
                 description:
-                  "Send your collection URL to customers via email, socials, or in-app. They submit in 30 seconds.",
+                  "Review what comes in. Approve the ones that sell. Reject the rest. You control the narrative.",
               },
               {
                 step: "3",
                 title: "Embed & convert",
                 description:
-                  "Copy one line of code to your site. Watch your wall of love grow — and your conversions with it.",
+                  "One script tag. Your landing page gets a wall of love. Visitors see proof. Signups go up.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
@@ -286,14 +256,14 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Everything you need to build trust at scale
+              From zero to wall of love in minutes
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              A complete ecosystem for collecting, managing, and displaying
-              social proof
+              No bloat. Just the features that put social proof on your landing
+              page.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {features.map((feature) => (
               <div
                 key={feature.title}
@@ -367,7 +337,7 @@ export default function LandingPage() {
               Start free. Upgrade when you grow.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {plans.map((plan) => (
               <div
                 key={plan.name}
@@ -422,11 +392,11 @@ export default function LandingPage() {
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Ready to let your customers sell for you?
+            Your landing page needs social proof. Add it now.
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Join thousands of businesses using TrustFlow to turn social proof
-            into revenue.
+            Import your tweets, get a wall of love, embed it in one line. Free
+            forever.
           </p>
           <div className="mt-8">
             <Link href="/register">

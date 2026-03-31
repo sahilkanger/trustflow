@@ -13,7 +13,6 @@ export async function GET() {
   var TRUSTFLOW_API = (document.currentScript && document.currentScript.getAttribute('data-api')) || '${process.env.NEXT_PUBLIC_APP_URL || ""}';
   var spaceId = document.currentScript && document.currentScript.getAttribute('data-space-id');
   var theme = (document.currentScript && document.currentScript.getAttribute('data-theme')) || 'light';
-  var layout = (document.currentScript && document.currentScript.getAttribute('data-layout')) || 'wall';
   var maxItems = parseInt((document.currentScript && document.currentScript.getAttribute('data-max')) || '12', 10);
   var containerId = (document.currentScript && document.currentScript.getAttribute('data-container')) || null;
 
@@ -26,9 +25,7 @@ export async function GET() {
     var style = document.createElement('style');
     style.textContent = [
       '.tf-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }',
-      '.tf-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding-bottom: 8px; -ms-overflow-style: none; scrollbar-width: none; }',
-      '.tf-carousel::-webkit-scrollbar { display: none; }',
-      '.tf-card { background: ' + (theme === 'dark' ? '#1f2937' : '#ffffff') + '; border: 1px solid ' + (theme === 'dark' ? '#374151' : '#e5e7eb') + '; border-radius: 12px; padding: 20px; scroll-snap-align: start; min-width: 300px; }',
+      '.tf-card { background: ' + (theme === 'dark' ? '#1f2937' : '#ffffff') + '; border: 1px solid ' + (theme === 'dark' ? '#374151' : '#e5e7eb') + '; border-radius: 12px; padding: 20px; }',
       '.tf-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }',
       '.tf-stars { display: flex; gap: 2px; margin-bottom: 12px; }',
       '.tf-star { width: 16px; height: 16px; }',
@@ -113,10 +110,9 @@ export async function GET() {
     }
 
     var items = data.testimonials.slice(0, maxItems);
-    var layoutClass = layout === 'carousel' ? 'tf-carousel' : 'tf-wall';
     var color = data.space.primaryColor || '#4F46E5';
 
-    var html = '<div class="' + layoutClass + '">';
+    var html = '<div class="tf-wall">';
     for (var i = 0; i < items.length; i++) {
       html += renderTestimonial(items[i], color);
     }

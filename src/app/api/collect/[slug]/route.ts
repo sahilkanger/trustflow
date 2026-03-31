@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { submitTestimonialSchema } from "@/lib/validations";
 import { PLANS } from "@/lib/utils";
-import { analyzeSentiment } from "@/lib/sentiment";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import type { Plan } from "@prisma/client";
 
@@ -55,9 +54,7 @@ export async function POST(req: Request, { params }: RouteParams) {
     );
   }
 
-  // AI sentiment analysis — the system learns from every submission
-  const { score: sentiment, summary } = analyzeSentiment(parsed.data.text);
-
+  // Create testimonial
   const testimonial = await prisma.testimonial.create({
     data: {
       ...parsed.data,
@@ -67,8 +64,6 @@ export async function POST(req: Request, { params }: RouteParams) {
       spaceId: space.id,
       status: space.requireApproval ? "PENDING" : "APPROVED",
       source: "FORM",
-      sentiment,
-      summary,
     },
   });
 

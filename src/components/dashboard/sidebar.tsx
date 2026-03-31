@@ -66,7 +66,7 @@ export function Sidebar() {
             <span className="text-sm font-semibold">Upgrade to Pro</span>
           </div>
           <p className="text-xs text-indigo-100 mb-3">
-            Unlimited testimonials, remove branding & more
+            Remove branding & get unlimited testimonials
           </p>
           <Link href="/billing">
             <Button

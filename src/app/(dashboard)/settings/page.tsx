@@ -116,23 +116,7 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* API Key (for Enterprise) */}
-      {session?.user?.plan === "ENTERPRISE" && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">API Access</CardTitle>
-            <CardDescription>
-              Use the TrustFlow API to integrate with your systems
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              Your API endpoints use your session for authentication.
-              Contact support for API key access.
-            </p>
-          </CardContent>
-        </Card>
-      )}
+
     </div>
   );
 }

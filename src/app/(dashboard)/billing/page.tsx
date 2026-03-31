@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Zap, Crown, Building2 } from "lucide-react";
+import { Check, Zap, Crown } from "lucide-react";
 
 const plans = [
   {
@@ -24,9 +24,10 @@ const plans = [
     features: [
       "1 space",
       "10 testimonials",
-      "Basic embed widget",
-      "Collection pages",
-      "TrustFlow branding",
+      "Tweet import",
+      "Wall of Love embed",
+      "Collection page",
+      "TrustFlow branding on widget",
     ],
   },
   {
@@ -40,25 +41,8 @@ const plans = [
       "3 spaces",
       "Unlimited testimonials",
       "Remove TrustFlow branding",
-      "Email campaigns",
-      "Analytics dashboard",
+      "Unlimited tweet imports",
       "Priority support",
-    ],
-  },
-  {
-    key: "BUSINESS",
-    name: "Business",
-    icon: Building2,
-    price: "$79",
-    period: "/month",
-    features: [
-      "10 spaces",
-      "Unlimited testimonials",
-      "AI sentiment analysis",
-      "Advanced analytics",
-      "Custom domains",
-      "API access",
-      "Everything in Pro",
     ],
   },
 ];
@@ -140,7 +124,7 @@ export default function BillingPage() {
       </Card>
 
       {/* Plans */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 gap-6 max-w-2xl">
         {plans.map((plan) => {
           const isCurrent = plan.key === currentPlan;
           return (

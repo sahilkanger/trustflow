@@ -80,8 +80,6 @@ model User {
 enum Plan {
   FREE
   PRO
-  BUSINESS
-  ENTERPRISE
 }
 
 // ─── SPACES (Projects/Businesses) ───────────
@@ -107,7 +105,6 @@ model Space {
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   testimonials Testimonial[]
   widgets      Widget[]
-  emailCampaigns EmailCampaign[]
 
   // Analytics
   pageViews    Int  @default(0)
@@ -143,9 +140,10 @@ model Testimonial {
   source    TestimonialSource @default(FORM)
   tags      String[]          // Flexible tagging
 
-  // AI-enhanced fields
-  sentiment     Float?    // -1 to 1
-  summary       String?   // AI-generated summary
+  // Twitter import metadata
+  tweetId       String?   @unique // Original tweet ID for dedup
+  tweetUrl      String?   // Original tweet URL
+
   highlighted   Boolean   @default(false) // Featured testimonial
 
   // Relations
@@ -168,7 +166,7 @@ enum TestimonialStatus {
 
 enum TestimonialSource {
   FORM       // Submitted via collection page
-  EMAIL      // Submitted via email campaign
+  TWITTER    // Imported from tweet URL
   IMPORT     // Imported from external source
   API        // Submitted via API
 }
@@ -200,64 +198,6 @@ model Widget {
 
 enum WidgetType {
   WALL_OF_LOVE
-  CAROUSEL
-  BADGE
-  MINIMAL
-  FLOATING
 }
 
-// ─── EMAIL CAMPAIGNS (Automated Collection) ─
-
-model EmailCampaign {
-  id       String  @id @default(cuid())
-  spaceId  String
-  name     String
-  subject  String
-  body     String  @db.Text
-
-  // Scheduling
-  status   CampaignStatus @default(DRAFT)
-  sentAt   DateTime?
-
-  // Recipients
-  recipients EmailRecipient[]
-
-  // Analytics  
-  totalSent    Int @default(0)
-  totalOpened  Int @default(0)
-  totalClicked Int @default(0)
-  totalSubmitted Int @default(0)
-
-  // Relations
-  space    Space   @relation(fields: [spaceId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([spaceId])
-}
-
-enum CampaignStatus {
-  DRAFT
-  SCHEDULED
-  SENT
-  CANCELLED
-}
-
-model EmailRecipient {
-  id          String @id @default(cuid())
-  campaignId  String
-  email       String
-  name        String?
-
-  // Tracking
-  sentAt    DateTime?
-  openedAt  DateTime?
-  clickedAt DateTime?
-  submittedAt DateTime?
-
-  campaign  EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-
-  @@index([campaignId])
-  @@index([email])
-}
+// ─── END OF SCHEMA ──────────────────────────

@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { absoluteUrl } from "@/lib/utils";
 import { TestimonialList } from "./testimonial-list";
+import { TweetImport } from "./tweet-import";
 
 interface SpacePageProps {
   params: Promise<{ spaceId: string }>;
@@ -88,6 +89,11 @@ export default async function SpacePage({ params }: SpacePageProps) {
         </div>
       </div>
 
+      {/* Tweet Import — the killer feature */}
+      <div className="mb-8">
+        <TweetImport spaceId={space.id} />
+      </div>
+
       {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-3 mb-8">
         <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100/50 border-indigo-200">
@@ -123,7 +129,7 @@ export default async function SpacePage({ params }: SpacePageProps) {
               </div>
             </div>
             <code className="block rounded bg-white/80 px-3 py-2 text-xs break-all">
-              {`<script src="${absoluteUrl("/api/embed/script.js")}" data-space-id="${space.id}" data-layout="wall"></script>`}
+              {`<script src="${absoluteUrl("/api/embed/script.js")}" data-space-id="${space.id}"></script>`}
             </code>
             <p className="text-xs text-muted-foreground mt-2">
               Or use iframe: <code className="text-[10px]">{`<iframe src="${embedUrl}" width="100%" height="600"></iframe>`}</code>
@@ -164,8 +170,6 @@ export default async function SpacePage({ params }: SpacePageProps) {
             testimonials={space.testimonials.map((t) => ({
               ...t,
               tags: t.tags,
-              sentiment: t.sentiment,
-              summary: t.summary,
             }))}
             spaceId={space.id}
           />
